@@ -1,6 +1,6 @@
 import Task from './components/Task';
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
 
 function Calculate1rm(weight: number, reps: number) {
   let oneRepMax = weight * (1 + (reps/ 30));
@@ -11,10 +11,8 @@ function Calculate1rm(weight: number, reps: number) {
 export default function App() {
   const [task, setTask] = useState();
   const [taskItems, setTaskItems] = useState([]);
-  setTask(null);
-}
 
-  const deleteTask = (index) => {
+  const deleteTask = (index: number) => {
     let itemsCopy = [...taskItems];
     itemsCopy.splice(index, 1);
     setTaskItems(itemsCopy);
@@ -24,9 +22,7 @@ export default function App() {
     Keyboard.dismiss();
     setTaskItems([...taskItems, task])
   }
-  let userWeight = 123332;
-  let userReps = 111111;
-  let result = Calculate1rm(userWeight, userReps);
+
   return (
     <View style={styles.container2}>
       {/* Title */}
@@ -35,20 +31,20 @@ export default function App() {
           
           
          {/* Workout Tasks */}
-        <View style={styles.items}>
+        <ScrollView style={styles.items}>
           {
             taskItems.map((item, index) => {
               return (
-                <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                <TouchableOpacity key={index} onPress={() => deleteTask(index)}>
                   <Task text={item} />
                 </TouchableOpacity>
               )
 
             })
           }
-          <Task text={'Workout 1'} />
-          <Task text={'Schlurpout 2'} />
-        </View> 
+          <Task text={'Bench Press'} />
+          <Task text={'Lateral Raise'} />
+        </ScrollView> 
 
       </View>
 
@@ -57,10 +53,10 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.writeTaskWrapper}
         >
-          <TextInput style={styles.input} placeholder={'Write Here!'} value={task} onChangeText={text => setTask(text)} />
+          <TextInput style={styles.input} placeholder={'New exercise'} value={task} onChangeText={text => setTask(text)} />
 
           <TouchableOpacity onPress={() => handleAddTask()}>
-            <View> style={styles.addWrapper}>
+            <View style={styles.addWrapper}>
               <Text style={styles.addText}>+</Text>
             </View>
           </TouchableOpacity>
@@ -69,7 +65,7 @@ export default function App() {
 
     </View>
   );
-
+}
 
 const styles = StyleSheet.create({
   container2: {
