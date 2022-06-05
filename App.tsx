@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  
   button: {
     borderRadius: 12,
     shadowColor: theme.colors.primary,

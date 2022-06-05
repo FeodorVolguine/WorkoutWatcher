@@ -1,0 +1,11 @@
+function Calculate1rm(weight: number, reps: number) {
+  let oneRepMax = weight * (1 + (reps/ 30));
+  return oneRepMax;
+};
+
+
+export default function App() {
+  let userWeight = 122;
+  let userReps = 111111;
+  let result = Calculate1rm(userWeight, userReps);
+  return (
