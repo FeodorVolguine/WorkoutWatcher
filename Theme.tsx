@@ -1,7 +1,7 @@
 import React from "react";
 
 const palette = {
-  purple: '#5A31F4',
+  blue: '#6495ED',
   green: '#0ECD9D',
   red: '#CD0E61',
   black: '#0B0B0B',
@@ -18,7 +18,7 @@ export const theme = {
   colors: {
     background: palette.white,
     foreground: palette.black,
-    primary: palette.purple,
+    primary: palette.blue,
     success: palette.green,
     failure: palette.red
   },

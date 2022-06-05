@@ -1,19 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Pressable, StyleSheet, Switch } from 'react-native';
 
 import { theme, darkTheme, ThemeContext } from './Theme';
 
-import Box from './components/Box';
+import Area from './components/Area';
 import Text from './components/Text';
+
+import { List } from './components/List';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   
   return (
     <ThemeContext.Provider value={darkMode ? darkTheme : theme}>
-      <Box style={styles.container}>
-        <Text variant="header" color="primary">Hello</Text>
+      <Area style={styles.container}>
+        <Text variant="header" color="primary">Today's exercises</Text>
+
+        <List></List>
 
         <Pressable
           //onPress={onPressHandler}
@@ -23,7 +27,7 @@ export default function App() {
 
         <StatusBar style="auto"/>
         <Switch value={darkMode} onValueChange={setDarkMode}/>
-      </Box>
+      </Area>
     </ThemeContext.Provider>
   );
 }
