@@ -1,18 +1,18 @@
 import React, { useContext } from 'react';
-import { Text as RNText, TextStyle } from 'react-native';
+import { Text as CoreText, TextStyle } from 'react-native';
 
 import { theme, ThemeContext } from '../Theme';
 
-interface TextProps extends React.ComponentProps<typeof RNText> {
+interface TextProps extends React.ComponentProps<typeof CoreText> {
   variant?: keyof typeof theme.textVariants
   color?: keyof typeof theme.colors
 }
 
-const Text = ({variant = "body", color = "foreground", style, children}: TextProps) => {
+const Text = ({variant = 'body', color = 'onPrimary', style, children}: TextProps) => {
   const theme = useContext(ThemeContext)
 
   return (
-    <RNText
+    <CoreText
       style={{
         color: theme.colors[color],
         ...theme.textVariants[variant] as TextStyle,
@@ -20,7 +20,7 @@ const Text = ({variant = "body", color = "foreground", style, children}: TextPro
       }}
     >
       {children}
-    </RNText>
+    </CoreText>
   );
 };
 

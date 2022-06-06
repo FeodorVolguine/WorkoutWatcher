@@ -14,10 +14,10 @@ interface ListItemProps {
 
 const ListItem = (props: ListItemProps) => {
   return (
-    <Area backgroundColor='success'>
-      <Text>{props.name}</Text>
-      <Text>{props.weight}lb x {props.reps}</Text> 
-      <Text>Estimated 1RM: {Calculate1RM(props.weight, props.reps)}</Text>
+    <Area color='primaryContainer'>
+      <Text color='onPrimaryContainer'>{props.name}</Text>
+      <Text color='onPrimaryContainer'>{props.weight}lb x {props.reps}</Text> 
+      <Text color='onPrimaryContainer'>Estimated 1RM: {Calculate1RM(props.weight, props.reps).toFixed(1)}</Text>
     </Area>
   );
 };
@@ -39,34 +39,48 @@ export const List = () => {
     SetItems(newItems);
   }
 
+
+
   return (
     <Area>
       <Modal
         visible={modalVisible}
       >
         <TouchableOpacity onPress={() => SetModalVisible(false)}>
-          <Area margin='m' >
-            <Text>&larr;</Text>
+          <Area margin='m' color='primary' style={styles.button}>
+            <Text color='onPrimary' style={{fontWeight: 'bold'}}>&larr;</Text>
           </Area>
         </TouchableOpacity>
 
-        <Area margin='m'>
-          <Text>Name</Text>
-          <TextInput
-            value={newItemName}
-            onChangeText={text => SetNewItemName(text)}
-          />
-          <Text>Weight</Text>
-          <TextInput
-            value={newItemWeight.toString()}
-            onChangeText={text => SetNewItemWeight(+text)}
-          />
-          <Text>Reps</Text>
-          <TextInput
-            keyboardType='number-pad'
-            value={newItemReps.toString()}
-            onChangeText={text => SetNewItemReps(+text)}
-          />
+        <Area
+          padding='l'
+          margin='m'
+          color='background'
+        >
+          <Area color='secondaryContainer' style={styles.areaShadow}>
+            <Text color='onSecondaryContainer'>Name</Text>
+            <TextInput
+              value={newItemName}
+              onChangeText={text => SetNewItemName(text)}
+            />
+          </Area>
+          
+          <Area color='secondaryContainer' style={styles.areaShadow}>
+            <Text color='onSecondaryContainer'>Weight</Text>
+            <TextInput
+              value={newItemWeight.toString()}
+              onChangeText={text => SetNewItemWeight(+text)}
+            />
+          </Area>
+          
+          <Area color='secondaryContainer' style={styles.areaShadow}>
+            <Text color='onSecondaryContainer'>Reps</Text>
+            <TextInput
+              keyboardType='number-pad'
+              value={newItemReps.toString()}
+              onChangeText={text => SetNewItemReps(+text)}
+            />
+          </Area>
         </Area>
 
         <TouchableOpacity
@@ -78,7 +92,7 @@ export const List = () => {
             SetNewItemReps(0);
           }}
         >
-          <Area margin='m' backgroundColor='success'>
+          <Area margin='m'>
             <Text>+</Text>
           </Area>
         </TouchableOpacity>
@@ -96,24 +110,25 @@ export const List = () => {
       }
       </ScrollView>
 
-      <TouchableOpacity onPress={() => SetModalVisible(true)}>
-        <Area backgroundColor='primary'>
-          <Text>Add exercise</Text>
+      <TouchableOpacity onPress={() => SetModalVisible(true)} style={styles.button}>
+        <Area padding='m'>
+          <Text>Add</Text>
         </Area>
       </TouchableOpacity>
     </Area>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+const styles = {
+  areaShadow: {
+    shadowColor: 'black',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.5,
+    shadowRadius: 10
   },
   button: {
-    width: 50,
-    fontSize: 32,
-    borderRadius: 40
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    fontSize: 32
   }
-});
+};

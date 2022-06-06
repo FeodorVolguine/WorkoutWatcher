@@ -14,10 +14,10 @@ export default function App() {
   
   return (
     <ThemeContext.Provider value={darkMode ? darkTheme : theme}>
-      <Area style={styles.container}>
-        <Text variant="header" color="primary">Today's exercises</Text>
+      <Area padding='l' color='background' style={styles.container}>
+        <Text variant='header' color='secondary'>Today's exercises</Text>
 
-        <List></List>
+        <List/>
 
         <Pressable
           //onPress={onPressHandler}
@@ -25,7 +25,8 @@ export default function App() {
         >
         </Pressable>
 
-        <StatusBar style="auto"/>
+        <StatusBar style='auto'/>
+        <Text color='onBackground'>Dark mode</Text>
         <Switch value={darkMode} onValueChange={setDarkMode}/>
       </Area>
     </ThemeContext.Provider>
