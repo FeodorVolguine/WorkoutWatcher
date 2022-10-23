@@ -21,6 +21,8 @@ export default function App() {
     }
   });
 
+  let socialBadgeCount = 1;
+
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
@@ -43,7 +45,7 @@ export default function App() {
         >
           <Tab.Screen name='Log' component={LogScreen}/>
           <Tab.Screen name='Analytics' component={AnalyticsScreen}/>
-          <Tab.Screen name='Social' component={SocialScreen}/>
+          <Tab.Screen name='Social' component={SocialScreen} options={{ tabBarBadge: socialBadgeCount }}/>
           <Tab.Screen name='Settings' component={SettingsScreen}/>
         </Tab.Navigator>
       </NavigationContainer>
