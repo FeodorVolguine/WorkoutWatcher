@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import { Text, Box, ScrollView, Modal, Button, Input, FormControl } from 'native-base';
 
 import Calculate1RM from '../1RM Function';
 
@@ -11,11 +13,11 @@ interface ListItemProps {
 
 const ListItem = (props: ListItemProps) => {
   return (
-    <View >
+    <Box>
       <Text>{props.name}</Text>
       <Text>{props.weight}lb x {props.reps}</Text> 
       <Text>Estimated 1RM: {Calculate1RM(props.weight, props.reps).toFixed(1)}</Text>
-    </View>
+    </Box>
   );
 };
 
@@ -24,6 +26,7 @@ export const ExerciseList = () => {
   const [newItemWeight, SetNewItemWeight] = useState(0);
   const [newItemReps, SetNewItemReps] = useState(0);
   const [items, SetItems] = useState<ListItemProps[]>([]);
+
   const [modalVisible, SetModalVisible] = useState(false);
 
   const AddItem = () => {
@@ -37,89 +40,87 @@ export const ExerciseList = () => {
   }
 
   return (
-    <View>
+    <Box>
       <Modal
-        visible={modalVisible}
+        isOpen={modalVisible}
+        onClose={() => SetModalVisible(false)}
       >
-        <TouchableOpacity onPress={() => SetModalVisible(false)}>
-          <View>
-            <Text style={{fontWeight: 'bold'}}>&larr;</Text>
-          </View>
-        </TouchableOpacity>
+        <Modal.Content>
+          <Modal.CloseButton/>
+          <Modal.Header>New set</Modal.Header>
 
-        <View>
-          <View style={styles.areaShadow}>
-            <Text>Name</Text>
-            <TextInput
-              value={newItemName}
-              onChangeText={text => SetNewItemName(text)}
-            />
-          </View>
-          
-          <View style={styles.areaShadow}>
-            <Text>Weight</Text>
-            <TextInput
-              value={newItemWeight.toString()}
-              onChangeText={text => SetNewItemWeight(+text)}
-            />
-          </View>
-          
-          <View style={styles.areaShadow}>
-            <Text>Reps</Text>
-            <TextInput
-              keyboardType='number-pad'
-              value={newItemReps.toString()}
-              onChangeText={text => SetNewItemReps(+text)}
-            />
-          </View>
-        </View>
+          <Modal.Body>
+            <FormControl>
+              <FormControl.Label>Exercise</FormControl.Label>
+              <Input
+                value={newItemName}
+                onChangeText={text => SetNewItemName(text)}
+              />
+            </FormControl>
+            
+            <FormControl>
+              <FormControl.Label>Weight</FormControl.Label>
+              <Input
+                value={newItemWeight.toString()}
+                onChangeText={text => SetNewItemWeight(+text)}
+              />
+            </FormControl>
+            
+            <FormControl>
+              <FormControl.Label>Reps</FormControl.Label>
+              <Input
+                keyboardType='number-pad'
+                value={newItemReps.toString()}
+                onChangeText={text => SetNewItemReps(+text)}
+              />
+            </FormControl>
+          </Modal.Body>
 
-        <TouchableOpacity
-          onPress={() => {
-            AddItem();
-            SetModalVisible(false);
-            SetNewItemName('');
-            SetNewItemWeight(0);
-            SetNewItemReps(0);
-          }}
-        >
-          <View>
-            <Text>+</Text>
-          </View>
-        </TouchableOpacity>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button variant="ghost" colorScheme="blueGray" onPress={() => { SetModalVisible(false); }}>
+                Cancel
+              </Button>
+
+              <Button onPress={() => {
+                AddItem();
+                SetModalVisible(false);
+                SetNewItemName('');
+                SetNewItemWeight(0);
+                SetNewItemReps(0);
+              }}>
+                Add
+              </Button>
+
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
       </Modal>
 
       <ScrollView>
       {
         items.map((item, index) => {
           return (
-            <TouchableOpacity key={index} onPress={() => RemoveItem(index)}>
+            <Button key={index} onPress={() => RemoveItem(index)}>
               <ListItem name={item.name} weight={item.weight} reps={item.reps}/>
-            </TouchableOpacity>
+            </Button>
           );
         })
       }
       </ScrollView>
 
-      <TouchableOpacity onPress={() => SetModalVisible(true)}>
-        <View>
-          <Text>Add</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+      <Button onPress={() => SetModalVisible(true)}>
+        <Box>
+          <Text fontSize='lg'>Add</Text>
+        </Box>
+      </Button>
+    </Box>
   );
 };
 
 const styles = {
-  areaShadow: {
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 10
-  },
   button: {
     alignItems: 'flex-start',
     justifyContent: 'center',
-    fontSize: 32
   }
 };
