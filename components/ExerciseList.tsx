@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-
-import Area from './Area';
-import Text from './Text';
+import { Modal, View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 import Calculate1RM from '../1RM Function';
 
@@ -14,15 +11,15 @@ interface ListItemProps {
 
 const ListItem = (props: ListItemProps) => {
   return (
-    <Area color='primaryContainer'>
-      <Text color='onPrimaryContainer'>{props.name}</Text>
-      <Text color='onPrimaryContainer'>{props.weight}lb x {props.reps}</Text> 
-      <Text color='onPrimaryContainer'>Estimated 1RM: {Calculate1RM(props.weight, props.reps).toFixed(1)}</Text>
-    </Area>
+    <View >
+      <Text>{props.name}</Text>
+      <Text>{props.weight}lb x {props.reps}</Text> 
+      <Text>Estimated 1RM: {Calculate1RM(props.weight, props.reps).toFixed(1)}</Text>
+    </View>
   );
 };
 
-export const List = () => {
+export const ExerciseList = () => {
   const [newItemName, SetNewItemName] = useState('');
   const [newItemWeight, SetNewItemWeight] = useState(0);
   const [newItemReps, SetNewItemReps] = useState(0);
@@ -39,49 +36,43 @@ export const List = () => {
     SetItems(newItems);
   }
 
-
-
   return (
-    <Area>
+    <View>
       <Modal
         visible={modalVisible}
       >
         <TouchableOpacity onPress={() => SetModalVisible(false)}>
-          <Area margin='m' color='primary' style={styles.button}>
-            <Text color='onPrimary' style={{fontWeight: 'bold'}}>&larr;</Text>
-          </Area>
+          <View>
+            <Text style={{fontWeight: 'bold'}}>&larr;</Text>
+          </View>
         </TouchableOpacity>
 
-        <Area
-          padding='l'
-          margin='m'
-          color='background'
-        >
-          <Area color='secondaryContainer' style={styles.areaShadow}>
-            <Text color='onSecondaryContainer'>Name</Text>
+        <View>
+          <View style={styles.areaShadow}>
+            <Text>Name</Text>
             <TextInput
               value={newItemName}
               onChangeText={text => SetNewItemName(text)}
             />
-          </Area>
+          </View>
           
-          <Area color='secondaryContainer' style={styles.areaShadow}>
-            <Text color='onSecondaryContainer'>Weight</Text>
+          <View style={styles.areaShadow}>
+            <Text>Weight</Text>
             <TextInput
               value={newItemWeight.toString()}
               onChangeText={text => SetNewItemWeight(+text)}
             />
-          </Area>
+          </View>
           
-          <Area color='secondaryContainer' style={styles.areaShadow}>
-            <Text color='onSecondaryContainer'>Reps</Text>
+          <View style={styles.areaShadow}>
+            <Text>Reps</Text>
             <TextInput
               keyboardType='number-pad'
               value={newItemReps.toString()}
               onChangeText={text => SetNewItemReps(+text)}
             />
-          </Area>
-        </Area>
+          </View>
+        </View>
 
         <TouchableOpacity
           onPress={() => {
@@ -92,9 +83,9 @@ export const List = () => {
             SetNewItemReps(0);
           }}
         >
-          <Area margin='m'>
+          <View>
             <Text>+</Text>
-          </Area>
+          </View>
         </TouchableOpacity>
       </Modal>
 
@@ -110,12 +101,12 @@ export const List = () => {
       }
       </ScrollView>
 
-      <TouchableOpacity onPress={() => SetModalVisible(true)} style={styles.button}>
-        <Area padding='m'>
+      <TouchableOpacity onPress={() => SetModalVisible(true)}>
+        <View>
           <Text>Add</Text>
-        </Area>
+        </View>
       </TouchableOpacity>
-    </Area>
+    </View>
   );
 };
 
