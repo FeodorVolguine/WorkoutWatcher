@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text, Box, ScrollView, Modal, Button, Input, FormControl } from 'native-base';
+import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, Input, FormControl } from 'native-base';
 
 import Calculate1RM from '../1RM Function';
 
@@ -61,6 +61,7 @@ export const ExerciseList = () => {
             <FormControl>
               <FormControl.Label>Weight</FormControl.Label>
               <Input
+                keyboardType='number-pad'
                 value={newItemWeight.toString()}
                 onChangeText={text => SetNewItemWeight(+text)}
               />
@@ -97,18 +98,22 @@ export const ExerciseList = () => {
         </Modal.Content>
       </Modal>
 
-      <ScrollView>
-      {
-        items.map((item, index) => {
-          return (
-            <Button key={index} onPress={() => RemoveItem(index)}>
-              <ListItem name={item.name} weight={item.weight} reps={item.reps}/>
-            </Button>
-          );
-        })
-      }
-      </ScrollView>
+      <Heading>Today</Heading>
+      <FlatList
+        data={items}
+        renderItem={({item, index}) =>
+          <HStack>
+            <VStack>
+              <Text>{item.name}</Text>
+              <Text>{item.weight}lb x {item.reps}</Text>
+              <Text>Estimated 1RM: {Calculate1RM(item.weight, item.reps).toFixed(1)}lb</Text>
+            </VStack>
 
+            <Button onPress={() => RemoveItem(index)}>Remove</Button>
+          </HStack>
+        }
+      />
+      
       <Button onPress={() => SetModalVisible(true)}>
         <Box>
           <Text fontSize='md'>Add</Text>

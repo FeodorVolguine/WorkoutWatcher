@@ -17,8 +17,6 @@ export default function App() {
   return (
     <NativeBaseProvider theme={theme}>
       <Box alignSelf='center' w='sm' rounded='xl' safeArea bg='primary.500'>
-        <Text fontSize='xl' alignSelf='center'>Today's exercises</Text>
-
         <ExerciseList/>
         
       </Box>
