@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, Input, FormControl } from 'native-base';
+import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, Input, InputGroup, InputRightAddon, FormControl } from 'native-base';
 
 import Calculate1RM from '../1RM Function';
 
@@ -50,11 +50,14 @@ export const ExerciseList = () => {
             
             <FormControl>
               <FormControl.Label>Weight</FormControl.Label>
-              <Input
-                keyboardType='number-pad'
-                value={newItemWeight.toString()}
-                onChangeText={text => SetNewItemWeight(+text)}
-              />
+              <InputGroup>
+                <Input
+                  keyboardType='number-pad'
+                  value={newItemWeight.toString()}
+                  onChangeText={text => SetNewItemWeight(+text)}
+                />
+                <InputRightAddon children={'lb'}/>
+              </InputGroup>
             </FormControl>
             
             <FormControl>
@@ -69,7 +72,7 @@ export const ExerciseList = () => {
 
           <Modal.Footer>
             <Button.Group space={2}>
-              <Button variant="ghost" colorScheme="blueGray" onPress={() => { SetModalVisible(false); }}>
+              <Button variant='ghost' colorScheme='blueGray' onPress={() => { SetModalVisible(false); }}>
                 Cancel
               </Button>
 
