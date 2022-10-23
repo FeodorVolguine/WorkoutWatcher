@@ -5,27 +5,17 @@ import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, Input, For
 
 import Calculate1RM from '../1RM Function';
 
-interface ListItemProps {
+interface ExerciseData {
   name: string
   weight: number
   reps: number
 }
 
-const ListItem = (props: ListItemProps) => {
-  return (
-    <Box bg='secondary.500'>
-      <Text>{props.name}</Text>
-      <Text>{props.weight}lb x {props.reps}</Text> 
-      <Text>Estimated 1RM: {Calculate1RM(props.weight, props.reps).toFixed(1)}lb</Text>
-    </Box>
-  );
-};
-
 export const ExerciseList = () => {
   const [newItemName, SetNewItemName] = useState('');
   const [newItemWeight, SetNewItemWeight] = useState(0);
   const [newItemReps, SetNewItemReps] = useState(0);
-  const [items, SetItems] = useState<ListItemProps[]>([]);
+  const [items, SetItems] = useState<ExerciseData[]>([]);
 
   const [modalVisible, SetModalVisible] = useState(false);
 
@@ -40,7 +30,7 @@ export const ExerciseList = () => {
   }
 
   return (
-    <Box>
+    <Box alignSelf='center'>
       <Modal
         isOpen={modalVisible}
         onClose={() => SetModalVisible(false)}

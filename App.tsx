@@ -1,28 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { Pressable, StyleSheet, Switch } from 'react-native';
+import React from 'react';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { NativeBaseProvider, extendTheme, Text, Box } from 'native-base';
 
+import { SettingsScreen } from './components/SettingsScreen';
 import { ExerciseList } from './components/ExerciseList';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   const theme = extendTheme({
     config: {
-      // Changing initialColorMode to 'dark'
-      initialColorMode: 'dark',
+      //initialColorMode: 'dark'
     }
   });
 
   return (
     <NativeBaseProvider theme={theme}>
-      <Box alignSelf='center' w='sm' rounded='xl' safeArea bg='primary.500'>
-        <ExerciseList/>
-        
-      </Box>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Log" component={ExerciseList}/>
+          <Tab.Screen name="Settings" component={SettingsScreen}/>
+        </Tab.Navigator>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }
-
-const styles = StyleSheet.create({
-});
