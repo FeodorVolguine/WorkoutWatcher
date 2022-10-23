@@ -11,7 +11,7 @@ interface ExerciseData {
   reps: number
 }
 
-export const ExerciseList = () => {
+export const LogScreen = () => {
   const [newItemName, SetNewItemName] = useState('');
   const [newItemWeight, SetNewItemWeight] = useState(0);
   const [newItemReps, SetNewItemReps] = useState(0);
