@@ -13,10 +13,10 @@ interface ListItemProps {
 
 const ListItem = (props: ListItemProps) => {
   return (
-    <Box>
+    <Box bg='secondary.500'>
       <Text>{props.name}</Text>
       <Text>{props.weight}lb x {props.reps}</Text> 
-      <Text>Estimated 1RM: {Calculate1RM(props.weight, props.reps).toFixed(1)}</Text>
+      <Text>Estimated 1RM: {Calculate1RM(props.weight, props.reps).toFixed(1)}lb</Text>
     </Box>
   );
 };
@@ -111,7 +111,7 @@ export const ExerciseList = () => {
 
       <Button onPress={() => SetModalVisible(true)}>
         <Box>
-          <Text fontSize='lg'>Add</Text>
+          <Text fontSize='md'>Add</Text>
         </Box>
       </Button>
     </Box>
