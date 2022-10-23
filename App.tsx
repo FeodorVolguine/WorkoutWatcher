@@ -3,7 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { NativeBaseProvider, extendTheme, Text, Box } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 
 import { SettingsScreen } from './components/SettingsScreen';
 import { ExerciseList } from './components/ExerciseList';
