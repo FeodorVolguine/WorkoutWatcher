@@ -38,10 +38,11 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
 
   return (
     <VStack space={2} alignItems='center'>
-      { value.error &&
-        <Box p='6' rounded='lg' bg='error.50'>
-          <Text fontWeight='semibold' color='error.700'>{value.error}</Text>
-        </Box>
+      { value.error ?
+          <Box p='6' rounded='lg' bg='error.50'>
+            <Text fontWeight='semibold' color='error.700'>{value.error}</Text>
+          </Box>
+        : null
       }
 
       <FormControl isInvalid={ !value.email } w='75%' maxW='300px'>
@@ -52,7 +53,7 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
           value={value.email}
           onChangeText={text => SetValue({ ...value, email: text })}
         />
-        { !value.email && <FormControl.ErrorMessage>Please enter a valid email.</FormControl.ErrorMessage>}
+        { value.email ? null : <FormControl.ErrorMessage>Please enter a valid email.</FormControl.ErrorMessage>}
       </FormControl>
       
       <FormControl isInvalid={ !value.password } w='75%' maxW='300px'>
@@ -67,7 +68,7 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
             <Button
               size='xs'
               variant='outline'
-              w='1/6'
+              w='1/5'
               h='full'
               onPress={() => SetShowPassword(!showPassword)}
             >
@@ -75,7 +76,7 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
             </Button>
           }
         />
-        { !value.password && <FormControl.ErrorMessage>Please enter a valid password.</FormControl.ErrorMessage>}
+        { value.password ? null : <FormControl.ErrorMessage>Please enter a valid password.</FormControl.ErrorMessage>}
       </FormControl>
 
       <Button
