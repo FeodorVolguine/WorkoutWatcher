@@ -1,37 +1,23 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text, Box, HStack, VStack, Switch, Radio } from 'native-base';
+import { Text, Box, VStack, Button } from 'native-base';
+
+import { signOut } from 'firebase/auth';
+
+import { auth } from '../config/Firebase';
+
+import { useAuthentication } from '../hooks/useAuthentication';
 
 export const SettingsTab = () => {
-  const [weightUnit, SetWeightUnit] = useState('lb');
+  const { user } = useAuthentication();
 
   return (
-    <VStack>
-      <Text fontSize='lg'>Weight unit</Text>
-      <Radio.Group
-        name='weightUnitSelection'
-        accessibilityLabel='Preferred weight unit'
-        value={weightUnit}
-        onChange={unit => { SetWeightUnit(unit); }}
-      >
-        <Radio value='lb'>
-          lb
-        </Radio>
-        <Radio value='kg'>
-          kg
-        </Radio>
-      </Radio.Group>
-
-      <HStack alignItems='center' space={8}>
-        <Text fontSize='lg'>Auto-share workout</Text>
-        <Switch/>
-      </HStack>
-
-      <HStack alignItems='center' space={8}>
-        <Text fontSize='lg'>Goal reminders</Text>
-        <Switch/>
-      </HStack>
+    <VStack space={4} alignItems='center'>
+      <Box>
+        <Text>Profile {user?.email}</Text>
+        <Button size='md' onPress={() => signOut(auth)}>Sign Out</Button>
+      </Box>
     </VStack>
   );
 };

@@ -1,12 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
-import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, Input, InputGroup, InputRightAddon, FormControl } from 'native-base';
+import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, IconButton, Icon, Input, InputGroup, InputRightAddon, FormControl } from 'native-base';
 
-import { signOut } from 'firebase/auth';
-
-import { auth } from '../config/Firebase';
-import { useAuthentication } from '../hooks/useAuthentication';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import Calculate1RM from '../1RM Function';
 
@@ -17,17 +13,18 @@ interface ExerciseData {
 }
 
 export const LogTab = () => {
-  const [newItemName, SetNewItemName] = React.useState('');
-  const [newItemWeight, SetNewItemWeight] = React.useState(0);
-  const [newItemReps, SetNewItemReps] = React.useState(0);
+  const [newItem, SetNewItem] = React.useState({
+    name: '',
+    weight: 0,
+    reps: 0
+  });
+
   const [items, SetItems] = React.useState<ExerciseData[]>([]);
 
   const [modalVisible, SetModalVisible] = React.useState(false);
 
-  const { user } = useAuthentication();
-
   const AddItem = () => {
-    SetItems([...items, {name: newItemName, weight: newItemWeight, reps: newItemReps}]);
+    SetItems([...items, newItem]);
   };
 
   const RemoveItem = (index: number) => {
@@ -50,8 +47,8 @@ export const LogTab = () => {
             <FormControl>
               <FormControl.Label>Exercise</FormControl.Label>
               <Input
-                value={newItemName}
-                onChangeText={text => SetNewItemName(text)}
+                value={newItem.name}
+                onChangeText={text => SetNewItem({...newItem, name: text})}
               />
             </FormControl>
             
@@ -60,8 +57,8 @@ export const LogTab = () => {
               <InputGroup>
                 <Input
                   keyboardType='number-pad'
-                  value={newItemWeight.toString()}
-                  onChangeText={text => SetNewItemWeight(+text)}
+                  value={newItem.weight.toString()}
+                  onChangeText={text => SetNewItem({...newItem, weight: +text})}
                 />
                 <InputRightAddon children={'lb'}/>
               </InputGroup>
@@ -71,8 +68,8 @@ export const LogTab = () => {
               <FormControl.Label>Reps</FormControl.Label>
               <Input
                 keyboardType='number-pad'
-                value={newItemReps.toString()}
-                onChangeText={text => SetNewItemReps(+text)}
+                value={newItem.reps.toString()}
+                onChangeText={text => SetNewItem({...newItem, reps: +text})}
               />
             </FormControl>
           </Modal.Body>
@@ -86,9 +83,12 @@ export const LogTab = () => {
               <Button onPress={() => {
                 AddItem();
                 SetModalVisible(false);
-                SetNewItemName('');
-                SetNewItemWeight(0);
-                SetNewItemReps(0);
+
+                SetNewItem({
+                  name: '',
+                  weight: 0,
+                  reps: 0
+                });
               }}>
                 Add
               </Button>
@@ -98,39 +98,32 @@ export const LogTab = () => {
         </Modal.Content>
       </Modal>
 
-      <Box>
-        <Text>Welcome {user?.email}</Text>
-        <Button onPress={() => signOut(auth)}>Sign Out</Button>
-      </Box>
-
-      <Heading>Today</Heading>
+      <Heading mb='2' size='md'>Today</Heading>
       <FlatList
         data={items}
         renderItem={({item, index}) =>
-          <HStack>
-            <VStack>
+          <HStack borderBottomWidth='1' justifyContent='space-between'>
+            <VStack space={1}>
               <Text>{item.name}</Text>
               <Text>{item.weight}lb x {item.reps}</Text>
               <Text>Estimated 1RM: {Calculate1RM(item.weight, item.reps).toFixed(1)}lb</Text>
             </VStack>
 
-            <Button onPress={() => RemoveItem(index)}>Remove</Button>
+            <IconButton
+              colorScheme='trueGray'
+              icon={<Icon as={Ionicons} name='remove-circle-outline' size='lg' color='trueGray.400'/>}
+              onPress={() => RemoveItem(index)}
+            />
           </HStack>
         }
       />
       
-      <Button onPress={() => SetModalVisible(true)}>
-        <Box>
-          <Text fontSize='md'>Add</Text>
-        </Box>
+      <Button
+        variant='outline'
+        onPress={() => SetModalVisible(true)}
+      >
+        Add
       </Button>
     </Box>
   );
-};
-
-const styles = {
-  button: {
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  }
 };
