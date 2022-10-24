@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { Text, Box, HStack, VStack, Switch, Radio } from 'native-base';
 
-export const SettingsScreen = () => {
+export const SettingsTab = () => {
   const [weightUnit, SetWeightUnit] = useState('lb');
 
   return (

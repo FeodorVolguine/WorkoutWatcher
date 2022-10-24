@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, Input, InputGroup, InputRightAddon, FormControl } from 'native-base';
+
+import { signOut } from 'firebase/auth';
+
+import { auth } from '../config/Firebase';
+import { useAuthentication } from '../hooks/useAuthentication';
 
 import Calculate1RM from '../1RM Function';
 
@@ -11,13 +16,15 @@ interface ExerciseData {
   reps: number
 }
 
-export const LogScreen = () => {
-  const [newItemName, SetNewItemName] = useState('');
-  const [newItemWeight, SetNewItemWeight] = useState(0);
-  const [newItemReps, SetNewItemReps] = useState(0);
-  const [items, SetItems] = useState<ExerciseData[]>([]);
+export const LogTab = () => {
+  const [newItemName, SetNewItemName] = React.useState('');
+  const [newItemWeight, SetNewItemWeight] = React.useState(0);
+  const [newItemReps, SetNewItemReps] = React.useState(0);
+  const [items, SetItems] = React.useState<ExerciseData[]>([]);
 
-  const [modalVisible, SetModalVisible] = useState(false);
+  const [modalVisible, SetModalVisible] = React.useState(false);
+
+  const { user } = useAuthentication();
 
   const AddItem = () => {
     SetItems([...items, {name: newItemName, weight: newItemWeight, reps: newItemReps}]);
@@ -90,6 +97,11 @@ export const LogScreen = () => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
+
+      <Box>
+        <Text>Welcome {user?.email}</Text>
+        <Button onPress={() => signOut(auth)}>Sign Out</Button>
+      </Box>
 
       <Heading>Today</Heading>
       <FlatList
