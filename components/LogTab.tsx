@@ -108,20 +108,20 @@ export const LogTab = () => {
         </Modal.Content>
       </Modal>
 
-      <Heading mb='2' size='md'>Today</Heading>
+      <Heading mt='8' size='md'>Today</Heading>
       <FlatList
         data={sets}
         renderItem={({item, index}) =>
-          <HStack borderBottomWidth='1' justifyContent='space-between'>
+          <HStack mt='6' borderBottomWidth='1' justifyContent='space-between'>
             <VStack space={1}>
-              <Text>{item.name}</Text>
+              <Text bold>{item.name}</Text>
               <Text>{item.weight}lb x {item.reps}</Text>
               <Text>Estimated 1RM: {Calculate1RM(item.weight, item.reps).toFixed(1)}lb</Text>
             </VStack>
 
             <IconButton
               colorScheme='trueGray'
-              icon={<Icon as={Ionicons} name='remove-circle-outline' size='lg' color='trueGray.400'/>}
+              icon={<Icon as={Ionicons} name='remove' size='md' color='trueGray.400'/>}
               onPress={() => RemoveSet(index)}
             />
           </HStack>
@@ -129,6 +129,7 @@ export const LogTab = () => {
       />
       
       <Button
+        mt='8'
         variant='outline'
         onPress={() => SetModalVisible(true)}
       >
