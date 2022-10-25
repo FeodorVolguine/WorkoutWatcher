@@ -23,13 +23,13 @@ export function HomeScreen() {
           switch(route.name)
           {
             case 'Log':
-              return <Icon as={Ionicons} name='journal' size={size} color={color}/>;
+              return <Icon as={Ionicons} name='journal-outline' size={size} color={color}/>;
             case 'Analytics':
               return <Icon as={Ionicons} name='analytics' size={size} color={color}/>;
             case 'Social':
-              return <Icon as={Ionicons} name='md-people' size={size} color={color}/>;
+              return <Icon as={Ionicons} name='people-outline' size={size} color={color}/>;
             case 'Settings':
-              return <Icon as={Ionicons} name='settings' size={size} color={color}/>;
+              return <Icon as={Ionicons} name='settings-outline' size={size} color={color}/>;
           }
         }
       })}

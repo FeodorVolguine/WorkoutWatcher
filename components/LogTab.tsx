@@ -4,6 +4,12 @@ import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, IconButton
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { collection, query, doc, setDoc } from 'firebase/firestore';
+
+import { auth, database } from '../config/Firebase';
+
+import { useCollection } from '../hooks/database';
+
 import Calculate1RM from '../1RM Function';
 
 interface ExerciseData {
@@ -13,25 +19,28 @@ interface ExerciseData {
 }
 
 export const LogTab = () => {
-  const [newItem, SetNewItem] = React.useState({
+  const [newSet, SetNewSet] = React.useState({
+    time: 0,
     name: '',
     weight: 0,
     reps: 0
   });
 
-  const [items, SetItems] = React.useState<ExerciseData[]>([]);
-
+  //TODO: Use React Navigation modal
   const [modalVisible, SetModalVisible] = React.useState(false);
 
-  const AddItem = () => {
-    SetItems([...items, newItem]);
+  const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
+  const setsRef = collection(database, 'users', userID, 'sets');
+  const sets = useCollection(setsRef);
+
+  const AddSet = async() => {
+    await setDoc(doc(setsRef), newSet);
   };
 
-  const RemoveItem = (index: number) => {
-    let newItems = [...items];
-    newItems.splice(index, 1)
-    SetItems(newItems);
-  }
+  const RemoveSet = async(index: number) => {
+    //TODO: remove from database
+    alert('Removing sets from the database is not yet supported...');
+  };
 
   return (
     <Box alignSelf='center'>
@@ -47,8 +56,8 @@ export const LogTab = () => {
             <FormControl>
               <FormControl.Label>Exercise</FormControl.Label>
               <Input
-                value={newItem.name}
-                onChangeText={text => SetNewItem({...newItem, name: text})}
+                value={newSet.name}
+                onChangeText={text => SetNewSet({...newSet, name: text})}
               />
             </FormControl>
             
@@ -57,8 +66,8 @@ export const LogTab = () => {
               <InputGroup>
                 <Input
                   keyboardType='number-pad'
-                  value={newItem.weight.toString()}
-                  onChangeText={text => SetNewItem({...newItem, weight: +text})}
+                  value={newSet.weight.toString()}
+                  onChangeText={text => SetNewSet({...newSet, weight: +text})}
                 />
                 <InputRightAddon children={'lb'}/>
               </InputGroup>
@@ -68,8 +77,8 @@ export const LogTab = () => {
               <FormControl.Label>Reps</FormControl.Label>
               <Input
                 keyboardType='number-pad'
-                value={newItem.reps.toString()}
-                onChangeText={text => SetNewItem({...newItem, reps: +text})}
+                value={newSet.reps.toString()}
+                onChangeText={text => SetNewSet({...newSet, reps: +text})}
               />
             </FormControl>
           </Modal.Body>
@@ -81,10 +90,11 @@ export const LogTab = () => {
               </Button>
 
               <Button onPress={() => {
-                AddItem();
+                AddSet();
                 SetModalVisible(false);
 
-                SetNewItem({
+                SetNewSet({
+                  time: 0,
                   name: '',
                   weight: 0,
                   reps: 0
@@ -100,7 +110,7 @@ export const LogTab = () => {
 
       <Heading mb='2' size='md'>Today</Heading>
       <FlatList
-        data={items}
+        data={sets}
         renderItem={({item, index}) =>
           <HStack borderBottomWidth='1' justifyContent='space-between'>
             <VStack space={1}>
@@ -112,7 +122,7 @@ export const LogTab = () => {
             <IconButton
               colorScheme='trueGray'
               icon={<Icon as={Ionicons} name='remove-circle-outline' size='lg' color='trueGray.400'/>}
-              onPress={() => RemoveItem(index)}
+              onPress={() => RemoveSet(index)}
             />
           </HStack>
         }
