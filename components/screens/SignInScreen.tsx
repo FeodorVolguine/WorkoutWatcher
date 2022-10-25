@@ -29,9 +29,9 @@ export const SignInScreen = ({ navigation }: NativeStackScreenProps<any>) => {
     }
 
     try { await signInWithEmailAndPassword(auth, value.email, value.password); }
-    catch(error) { SetValue({ ...value, error: error.message }); }
+    catch(error) { SetValue({ ...value, error: error.message.slice(10) }); }
   }
-
+  
   return (
     <VStack space={2} alignItems='center'>
       { value.error ?

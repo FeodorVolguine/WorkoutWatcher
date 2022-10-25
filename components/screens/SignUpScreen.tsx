@@ -11,14 +11,18 @@ import { auth } from '../../config/Firebase';
 export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
   const [value, SetValue] = React.useState({
     email: '',
+
     password: '',
+    showPassword: false,
+
+    confirmPassword: '',
+    showConfirmPassword: false,
+
     error: ''
   });
 
   //TODO: Write a function to check whether or not credentials are valid
   const [isValid, SetIsValid] = React.useState(true);
-
-  const [showPassword, SetShowPassword] = React.useState(false);
 
   async function SignUp() {
     if(!(value.email && value.password))
@@ -59,7 +63,7 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
       <FormControl isInvalid={ !value.password } w='75%' maxW='300px'>
         <FormControl.Label>Password</FormControl.Label>
         <Input
-          type={ showPassword ? 'text' : 'password' }
+          type={ value.showPassword ? 'text' : 'password' }
           variant='underlined'
           placeholder='Enter password'
           value={value.password}
@@ -70,13 +74,36 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
               variant='outline'
               w='1/5'
               h='full'
-              onPress={() => SetShowPassword(!showPassword)}
+              onPress={() => SetValue({...value, showPassword: !value.showPassword})}
             >
-              { showPassword? 'Hide' : 'Show' }
+              { value.showPassword ? 'Hide' : 'Show' }
             </Button>
           }
         />
         { value.password ? null : <FormControl.ErrorMessage>Please enter a valid password.</FormControl.ErrorMessage>}
+      </FormControl>
+
+      <FormControl isInvalid={ value.password !== value.confirmPassword } w='75%' maxW='300px'>
+        <FormControl.Label>Confirm password</FormControl.Label>
+        <Input
+          type={ value.showConfirmPassword ? 'text' : 'password' }
+          variant='underlined'
+          placeholder='Confirm password'
+          value={value.confirmPassword}
+          onChangeText={text => SetValue({ ...value, confirmPassword: text })}
+          InputRightElement= {
+            <Button
+              size='xs'
+              variant='outline'
+              w='1/5'
+              h='full'
+              onPress={() => SetValue({...value, showConfirmPassword: !value.showConfirmPassword})}
+            >
+              { value.showConfirmPassword ? 'Hide' : 'Show' }
+            </Button>
+          }
+        />
+        { value.password === value.confirmPassword ? null : <FormControl.ErrorMessage>Passwords must match.</FormControl.ErrorMessage>}
       </FormControl>
 
       <Button

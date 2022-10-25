@@ -27,8 +27,7 @@ export const PasswordResetScreen = ({ navigation }: NativeStackScreenProps<any>)
         navigation.navigate('Sign In');
       })
       .catch((error) => {
-        //const errorCode = error.code;
-        value.error = error.message;
+        SetValue({...value, error: error.message});
       });
   }
 
