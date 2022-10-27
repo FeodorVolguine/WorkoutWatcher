@@ -16,7 +16,11 @@ export default function Index() {
   const { user } = useAuthentication();
   
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false
+      })}
+    >
       { user ? (
           <Stack.Screen name='Home' component={HomeScreen}/>
         ) : (

@@ -18,7 +18,9 @@ export function HomeScreen() {
 
   return (
     <Tab.Navigator
+      initialRouteName='Log'
       screenOptions={({ route }) => ({
+        headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           switch(route.name)
           {
@@ -36,7 +38,13 @@ export function HomeScreen() {
     >
       <Tab.Screen name='Log' component={LogTab}/>
       <Tab.Screen name='Analytics' component={AnalyticsTab}/>
-      <Tab.Screen name='Social' component={SocialTab} options={{ tabBarBadge: socialTabIconBadgeCount }}/>
+      <Tab.Screen
+        name='Social'
+        component={SocialTab}
+        options={{
+          tabBarBadge: socialTabIconBadgeCount ? socialTabIconBadgeCount : undefined
+        }}
+      />
       <Tab.Screen name='Settings' component={SettingsTab}/>
     </Tab.Navigator>
   );

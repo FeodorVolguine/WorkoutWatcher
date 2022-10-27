@@ -26,20 +26,15 @@ export const LogTab = () => {
     reps: 0
   });
 
-  //TODO: Use React Navigation modal
   const [modalVisible, SetModalVisible] = React.useState(false);
 
   const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
   const setsRef = collection(database, 'users', userID, 'sets');
+  //TODO: const sets = useCollection(query(setsRef, 'ORDER BY time'));
   const sets = useCollection(setsRef);
 
-  const AddSet = async() => {
-    await setDoc(doc(setsRef), newSet);
-  };
-
-  const RemoveSet = async(setID: string) => {
-    await deleteDoc(doc(database, "users", userID, "sets", setID));
-  };
+  const AddSet = async() => { await setDoc(doc(setsRef), newSet); };
+  const RemoveSet = async(setID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setID)); };
 
   return (
     <Box alignSelf='center'>
