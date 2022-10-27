@@ -19,7 +19,7 @@ export function useCollection(query: Query<DocumentData>)
 
   React.useEffect(() => onSnapshot(query, (querySnapshot) => {
     const values: any[] = [];
-    querySnapshot.forEach((doc) => { values.push(doc.data()); });
+    querySnapshot.forEach((doc) => { values.push({ ...doc.data(), id: doc.id }); });
     SetData(values);
   }), []);
 

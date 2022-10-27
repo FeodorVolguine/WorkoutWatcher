@@ -4,7 +4,7 @@ import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, IconButton
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { collection, query, doc, setDoc } from 'firebase/firestore';
+import { collection, query, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
 import { auth, database } from '../config/Firebase';
 
@@ -37,9 +37,8 @@ export const LogTab = () => {
     await setDoc(doc(setsRef), newSet);
   };
 
-  const RemoveSet = async(index: number) => {
-    //TODO: remove from database
-    alert('Removing sets from the database is not yet supported...');
+  const RemoveSet = async(setID: string) => {
+    await deleteDoc(doc(database, "users", userID, "sets", setID));
   };
 
   return (
@@ -111,7 +110,7 @@ export const LogTab = () => {
       <Heading mt='8' size='md'>Today</Heading>
       <FlatList
         data={sets}
-        renderItem={({item, index}) =>
+        renderItem={({ item }) =>
           <HStack mt='6' borderBottomWidth='1' justifyContent='space-between'>
             <VStack space={1}>
               <Text bold>{item.name}</Text>
@@ -122,7 +121,7 @@ export const LogTab = () => {
             <IconButton
               colorScheme='trueGray'
               icon={<Icon as={Ionicons} name='remove' size='md' color='trueGray.400'/>}
-              onPress={() => RemoveSet(index)}
+              onPress={() => RemoveSet(item.id)}
             />
           </HStack>
         }
