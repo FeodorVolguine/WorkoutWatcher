@@ -34,7 +34,7 @@ export const LogTab = () => {
   const sets = useCollection(setsRef);
 
   const AddSet = async() => { await setDoc(doc(setsRef), newSet); };
-  const RemoveSet = async(setID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setID)); };
+  const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
 
   return (
     <Box alignSelf='center'>
