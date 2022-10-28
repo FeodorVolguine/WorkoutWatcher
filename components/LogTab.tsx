@@ -37,7 +37,7 @@ export const LogTab = () => {
   const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
 
   return (
-    <Box alignSelf='center' maxH='md'>
+    <Box alignSelf='center' mt={6} p={4} bg='white' shadow={3}>
       <Modal
         isOpen={modalVisible}
         onClose={() => SetModalVisible(false)}
@@ -102,7 +102,7 @@ export const LogTab = () => {
         </Modal.Content>
       </Modal>
 
-      <Heading mt='8' size='md'>Today</Heading>
+      <Heading size='md'>Today</Heading>
       <VStack space={4}>
       {
         sets?.map((set) =>
@@ -124,7 +124,9 @@ export const LogTab = () => {
       </VStack>
       
       <Button
-        mt='8'
+        mt='4'
+        alignSelf='center'
+        maxW='16'
         variant='outline'
         onPress={() => SetModalVisible(true)}
       >

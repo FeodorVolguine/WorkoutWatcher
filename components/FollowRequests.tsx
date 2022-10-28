@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Heading, Box, HStack, FlatList, IconButton, Icon, Button } from 'native-base';
+import { Text, Heading, Box, HStack, FlatList, IconButton, Icon, Button, VStack } from 'native-base';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -23,30 +23,31 @@ export const FollowRequests = () => {
   const Decline = async(requesterDocID: string) => { await deleteDoc(doc(database, 'users', userID, 'followRequests', requesterDocID)); };
 
   return (
-    <Box alignSelf='center'>
-      <Heading mt='4' size='md'>Follow requests</Heading>
-      <FlatList
-        data={followRequests}
-        renderItem={({ item }) =>
-        <HStack borderBottomWidth='1' justifyContent='space-between' alignItems='center'>
-          <Text>{item.userID}</Text>
+    <Box mt='6' p={4} bg='white' shadow={3}>
+      <Heading size='md'>Follow requests</Heading>
+      <VStack space={4}>
+      {
+        followRequests?.map((request) =>
+          <HStack borderBottomWidth='1' justifyContent='space-between'>
+            <Text>{request.userID}</Text>
 
-          <Button.Group isAttached={true} size='lg'>
-            <IconButton
-              colorScheme='green'
-              icon={<Icon as={Ionicons} name='checkmark' color='green.500'/>}
-              onPress={() => Accept(item.id, item.userID)}
-            />
+            <Button.Group isAttached={true} size='lg'>
+              <IconButton
+                colorScheme='green'
+                icon={<Icon as={Ionicons} name='checkmark' color='green.500'/>}
+                onPress={() => Accept(request.id, request.userID)}
+              />
 
-            <IconButton
-              colorScheme='red'
-              icon={<Icon as={Ionicons} name='remove' color='red.500'/>}
-              onPress={() => Decline(item.id)}
-            />
-          </Button.Group>
-        </HStack>
-        }
-      />
+              <IconButton
+                colorScheme='red'
+                icon={<Icon as={Ionicons} name='remove' color='red.500'/>}
+                onPress={() => Decline(request.id)}
+              />
+            </Button.Group>
+          </HStack>
+        )
+      }
+      </VStack>
     </Box>
   );
 };

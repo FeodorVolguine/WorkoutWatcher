@@ -18,7 +18,7 @@ export function HomeScreen() {
 
   return (
     <Tab.Navigator
-      initialRouteName='Log'
+      initialRouteName='Social'
       screenOptions={({ route }) => ({
         //headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
