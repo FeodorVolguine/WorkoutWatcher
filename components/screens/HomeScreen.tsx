@@ -20,7 +20,7 @@ export function HomeScreen() {
     <Tab.Navigator
       initialRouteName='Log'
       screenOptions={({ route }) => ({
-        headerShown: false,
+        //headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           switch(route.name)
           {

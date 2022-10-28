@@ -24,14 +24,14 @@ export const FollowRequests = () => {
 
   return (
     <Box alignSelf='center'>
-      <Heading mt='8' size='md'>Follow requests</Heading>
+      <Heading mt='4' size='md'>Follow requests</Heading>
       <FlatList
         data={followRequests}
         renderItem={({ item }) =>
-        <HStack mt='6' borderBottomWidth='1' justifyContent='space-between' alignItems='center'>
+        <HStack borderBottomWidth='1' justifyContent='space-between' alignItems='center'>
           <Text>{item.userID}</Text>
 
-          <Button.Group isAttached={true} size='md'>
+          <Button.Group isAttached={true} size='lg'>
             <IconButton
               colorScheme='green'
               icon={<Icon as={Ionicons} name='checkmark' color='green.500'/>}

@@ -26,7 +26,7 @@ export const FollowingList = () => {
   const Unfollow = async(friendDocID: string) => { await deleteDoc(doc(database, 'users', userID, 'following', friendDocID)); };
 
   return (
-    <Box alignSelf='center'>
+    <VStack alignSelf='center'>
       <Modal
         isOpen={modalVisible}
         onClose={() => SetModalVisible(false)}
@@ -67,28 +67,28 @@ export const FollowingList = () => {
         </Modal.Content>
       </Modal>
 
-      <Heading mt='8' size='md'>Following</Heading>
-      <FlatList
-        data={following}
-        renderItem={({ item }) =>
-        <HStack mt='6' borderBottomWidth='1' justifyContent='space-between' alignItems='center'>
-          <Text>{item.userID}</Text>
+      <Heading mt='4' size='md'>Following</Heading>
+      <VStack space={4}>
+      {
+        following?.map((item) =>
+          <HStack borderBottomWidth='1' justifyContent='space-between' alignItems='center' key={item.id}>
+            <Text>{item.userID}</Text>
 
-          <Button
-            variant='ghost'
-            onPress={() => Unfollow(item.id)}
-          >Unfollow</Button>
-        </HStack>
-        }
-      />
+            <Button
+              variant='ghost'
+              onPress={() => Unfollow(item.id)}
+            >Unfollow</Button>
+          </HStack>
+        )
+      }
+      </VStack>
       
       <Button
-        mt='8'
         variant='outline'
         onPress={() => SetModalVisible(true)}
       >
         Add
       </Button>
-    </Box>
+    </VStack>
   );
 };

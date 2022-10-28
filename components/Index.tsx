@@ -18,11 +18,17 @@ export default function Index() {
   return (
     <Stack.Navigator
       screenOptions={({ route }) => ({
-        headerShown: false
+        //headerShown: false
       })}
     >
       { user ? (
-          <Stack.Screen name='Home' component={HomeScreen}/>
+          <Stack.Screen
+            name='Home'
+            component={HomeScreen}
+            options={({ route }) => ({
+              headerShown: false
+            })}
+          />
         ) : (
           <>
             <Stack.Screen name='Welcome' component={WelcomeScreen}/>

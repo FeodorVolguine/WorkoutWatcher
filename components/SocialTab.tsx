@@ -7,7 +7,7 @@ import { FollowRequests } from './FollowRequests';
 
 export const SocialTab = () => {
   return (
-    <VStack alignSelf='center'>
+    <VStack alignSelf='center' maxH='md'>
       <FollowingList/>
       <FollowRequests/>
     </VStack>

@@ -37,7 +37,7 @@ export const LogTab = () => {
   const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
 
   return (
-    <Box alignSelf='center'>
+    <Box alignSelf='center' maxH='md'>
       <Modal
         isOpen={modalVisible}
         onClose={() => SetModalVisible(false)}
@@ -103,24 +103,25 @@ export const LogTab = () => {
       </Modal>
 
       <Heading mt='8' size='md'>Today</Heading>
-      <FlatList
-        data={sets}
-        renderItem={({ item }) =>
+      <VStack space={4}>
+      {
+        sets?.map((set) =>
           <HStack mt='6' borderBottomWidth='1' justifyContent='space-between'>
             <VStack space={1}>
-              <Text bold>{item.name}</Text>
-              <Text>{item.weight}lb x {item.reps}</Text>
-              <Text>Estimated 1RM: {Calculate1RM(item.weight, item.reps).toFixed(1)}lb</Text>
+              <Text bold>{set.name}</Text>
+              <Text>{set.weight}lb x {set.reps}</Text>
+              <Text>Estimated 1RM: {Calculate1RM(set.weight, set.reps).toFixed(1)}lb</Text>
             </VStack>
 
             <IconButton
               colorScheme='trueGray'
               icon={<Icon as={Ionicons} name='remove' size='md' color='trueGray.400'/>}
-              onPress={() => RemoveSet(item.id)}
+              onPress={() => RemoveSet(set.id)}
             />
           </HStack>
-        }
-      />
+        )
+      }
+      </VStack>
       
       <Button
         mt='8'
