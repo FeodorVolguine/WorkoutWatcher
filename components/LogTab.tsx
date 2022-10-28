@@ -10,6 +10,8 @@ import { auth, database } from '../config/Firebase';
 
 import { useCollection } from '../hooks/database';
 
+import { Timer } from './Timer';
+
 import Calculate1RM from '../1RM Function';
 
 interface ExerciseData {
@@ -35,6 +37,8 @@ export const LogTab = () => {
 
   const AddSet = async() => { await setDoc(doc(setsRef), newSet); };
   const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
+
+  const timerDuration = 30;
 
   return (
     <Box alignSelf='center' mt={6} p={4} bg='white' shadow={3}>
@@ -102,11 +106,13 @@ export const LogTab = () => {
         </Modal.Content>
       </Modal>
 
+      <Timer duration={timerDuration}/>
+
       <Heading size='md'>Today</Heading>
       <VStack space={4}>
       {
         sets?.map((set) =>
-          <HStack mt='6' borderBottomWidth='1' justifyContent='space-between'>
+          <HStack mt='6' borderBottomWidth='1' justifyContent='space-between' key={set.id}>
             <VStack space={1}>
               <Text bold>{set.name}</Text>
               <Text>{set.weight}lb x {set.reps}</Text>
