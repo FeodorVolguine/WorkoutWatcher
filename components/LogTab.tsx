@@ -104,7 +104,7 @@ export const LogTab = () => {
 
       { countdownVisible ?
           <Box m='8'>
-            <Timer duration={90} onComplete={(totalElapsedTime) => SetCountdownVisible(false)}/>
+            <Timer duration={9} onComplete={() => SetCountdownVisible(false)}/>
           </Box>
         :
           null
@@ -113,8 +113,8 @@ export const LogTab = () => {
       <Heading size='md'>Today</Heading>
       <VStack space={4}>
         { sets?.map((set) =>
-            <VStack space={2}>
-              <HStack mt='6' justifyContent='space-between' key={set.id}>
+            <VStack space={2} key={set.id}>
+              <HStack mt='6' justifyContent='space-between'>
                 <VStack space={1}>
                   <Text bold>{set.name}</Text>
                   <Text>{set.weight}lb x {set.reps}</Text>
