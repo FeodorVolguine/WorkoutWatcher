@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, IconButton, Icon, Input, InputGroup, InputRightAddon, FormControl } from 'native-base';
+import { Text, Divider, Heading, Box, HStack, VStack, Modal, Button, IconButton, Icon, Input, InputGroup, InputRightAddon, FormControl } from 'native-base';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -13,12 +13,6 @@ import { useCollection } from '../hooks/database';
 import { Timer } from './Timer';
 
 import Calculate1RM from '../1RM Function';
-
-interface ExerciseData {
-  name: string
-  weight: number
-  reps: number
-}
 
 export const LogTab = () => {
   const [newSet, SetNewSet] = React.useState({
@@ -118,23 +112,26 @@ export const LogTab = () => {
 
       <Heading size='md'>Today</Heading>
       <VStack space={4}>
-      {
-        sets?.map((set) =>
-          <HStack mt='6' borderBottomWidth='1' justifyContent='space-between' key={set.id}>
-            <VStack space={1}>
-              <Text bold>{set.name}</Text>
-              <Text>{set.weight}lb x {set.reps}</Text>
-              <Text>Estimated 1RM: {Calculate1RM(set.weight, set.reps).toFixed(1)}lb</Text>
-            </VStack>
+        { sets?.map((set) =>
+            <VStack space={2}>
+              <HStack mt='6' justifyContent='space-between' key={set.id}>
+                <VStack space={1}>
+                  <Text bold>{set.name}</Text>
+                  <Text>{set.weight}lb x {set.reps}</Text>
+                  <Text>Estimated 1RM: {Calculate1RM(set.weight, set.reps).toFixed(1)}lb</Text>
+                </VStack>
 
-            <IconButton
-              colorScheme='trueGray'
-              icon={<Icon as={Ionicons} name='remove' size='md' color='trueGray.400'/>}
-              onPress={() => RemoveSet(set.id)}
-            />
-          </HStack>
-        )
-      }
+                <IconButton
+                  colorScheme='trueGray'
+                  icon={<Icon as={Ionicons} name='remove' size='md' color='trueGray.400'/>}
+                  onPress={() => RemoveSet(set.id)}
+                />
+              </HStack>
+
+              <Divider w="100%"/>
+            </VStack>
+          )
+        }
       </VStack>
       
       <Button
