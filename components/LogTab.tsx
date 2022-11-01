@@ -30,6 +30,8 @@ export const LogTab = () => {
 
   const [modalVisible, SetModalVisible] = React.useState(false);
 
+  const [countdownVisible, SetCountdownVisible] = React.useState(false);
+
   const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
   const setsRef = collection(database, 'users', userID, 'sets');
   //TODO: const sets = useCollection(query(setsRef, 'ORDER BY time'));
@@ -37,8 +39,6 @@ export const LogTab = () => {
 
   const AddSet = async() => { await setDoc(doc(setsRef), newSet); };
   const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
-
-  const timerDuration = 30;
 
   return (
     <Box alignSelf='center' mt={6} p={4} bg='white' shadow={3}>
@@ -97,6 +97,8 @@ export const LogTab = () => {
                   weight: 0,
                   reps: 0
                 });
+
+                SetCountdownVisible(true);
               }}>
                 Add
               </Button>
@@ -106,7 +108,13 @@ export const LogTab = () => {
         </Modal.Content>
       </Modal>
 
-      <Timer duration={timerDuration}/>
+      { countdownVisible ?
+          <Box m='8'>
+            <Timer duration={90} onComplete={(totalElapsedTime) => SetCountdownVisible(false)}/>
+          </Box>
+        :
+          null
+      }
 
       <Heading size='md'>Today</Heading>
       <VStack space={4}>
