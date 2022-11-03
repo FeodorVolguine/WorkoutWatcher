@@ -20,9 +20,11 @@ export default {
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "workout.watcher",
       "supportsTablet": true
     },
     "android": {
+      "package": "workout.watcher",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -31,6 +33,9 @@ export default {
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
+    "plugins": [
+      "@notifee/react-native"
+    ],
     "extra": {
       firebaseApiKey: process.env.FIREBASE_API_KEY,
       firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
