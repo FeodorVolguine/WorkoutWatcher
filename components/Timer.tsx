@@ -5,7 +5,6 @@ import { Platform, Vibration } from 'react-native';
 import { Text, Button, VStack, HStack } from 'native-base';
 
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import { sendEmailVerification } from 'firebase/auth';
 
 interface TimerProps
 {
@@ -14,13 +13,11 @@ interface TimerProps
 }
 
 export const Timer = (props: TimerProps) => {
-    const [isPlaying, SetIsPlaying] = React.useState(true);
     const [isDone, SetIsDone] = React.useState(false);
 
     return (
       <VStack space={6}>
         <CountdownCircleTimer
-          isPlaying={isPlaying}
           onComplete={() => {
             SetIsDone(true);
             if(Platform.OS === 'android')
@@ -62,16 +59,8 @@ export const Timer = (props: TimerProps) => {
             >
               Cancel
             </Button>
-
-            <Button
-              rounded='full'
-              variant='subtle'
-              onPress={() => SetIsPlaying(!isPlaying)}
-            >
-              { isPlaying ? 'Pause' : 'Resume' }
-            </Button>
           </HStack>
         }
       </VStack>
   );
-}
+};
