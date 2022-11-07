@@ -23,12 +23,12 @@ export const FollowRequests = () => {
   const Decline = async(requesterDocID: string) => { await deleteDoc(doc(database, 'users', userID, 'followRequests', requesterDocID)); };
 
   return (
-    <Box mt='6' p={4} bg='white' shadow={3}>
+    <Box mt='6' p={4}>
       <Heading size='md'>Follow requests</Heading>
       <VStack space={4}>
       {
         followRequests?.map((request) =>
-          <HStack borderBottomWidth='1' justifyContent='space-between'>
+          <HStack borderBottomWidth='1' justifyContent='space-between' key={request.id}>
             <Text>{request.userID}</Text>
 
             <Button.Group isAttached={true} size='lg'>

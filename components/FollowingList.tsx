@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Heading, Box, HStack, VStack, FlatList, Modal, Button, Input, FormControl } from 'native-base';
+import { Text, Heading, Box, HStack, VStack, Modal, Button, Input, FormControl } from 'native-base';
 
 import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
@@ -26,7 +26,7 @@ export const FollowingList = () => {
   const Unfollow = async(friendDocID: string) => { await deleteDoc(doc(database, 'users', userID, 'following', friendDocID)); };
 
   return (
-    <Box mt={6} p={4} bg='white' shadow={3}>
+    <Box mt={6} p={4}>
       <Modal
         isOpen={modalVisible}
         onClose={() => SetModalVisible(false)}

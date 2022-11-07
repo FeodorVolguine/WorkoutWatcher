@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Platform, Vibration } from 'react-native';
 
-import { Text, Button, VStack, HStack } from 'native-base';
+import { Text, Button, VStack } from 'native-base';
 
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
@@ -18,12 +18,13 @@ export const Timer = (props: TimerProps) => {
     return (
       <VStack space={6}>
         <CountdownCircleTimer
+          isPlaying={true}
           onComplete={() => {
             SetIsDone(true);
             if(Platform.OS === 'android')
-              Vibration.vibrate([1100, 700, 1100, 700, 1100, 700]);
+              Vibration.vibrate([1100, 0, 1100, 700, 1100, 700]);
             else if(Platform.OS === 'ios')
-              Vibration.vibrate([500, 500, 500, 500]);
+              Vibration.vibrate([0, 500, 500, 500]);
           }}
           duration={props.duration}
           colors={['#f87171', '#fb923c', '#fbbf24', '#a3e635', '#4ade80']}
@@ -43,23 +44,19 @@ export const Timer = (props: TimerProps) => {
 
         { isDone ?
           <Button
-            rounded='full'
             variant='subtle'
             onPress={() => props.onComplete()}
           >
             Close
           </Button>
           :
-          <HStack justifyContent='space-evenly'>
-            <Button
-              rounded='full'
-              variant='subtle'
-              colorScheme='danger'
-              onPress={() => props.onComplete()}
-            >
-              Cancel
-            </Button>
-          </HStack>
+          <Button
+            variant='subtle'
+            colorScheme='danger'
+            onPress={() => props.onComplete()}
+          >
+            Cancel
+          </Button>
         }
       </VStack>
   );

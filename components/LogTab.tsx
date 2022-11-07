@@ -4,7 +4,7 @@ import { Text, Divider, Heading, Box, HStack, VStack, Modal, Button, IconButton,
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { collection, query, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, orderBy, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
 import { auth, database } from '../config/Firebase';
 
@@ -12,11 +12,20 @@ import { useCollection } from '../hooks/database';
 
 import { Timer } from './Timer';
 
+import GroupBy from '../utility/GroupBy';
 import Calculate1RM from '../1RM Function';
+
+interface SetData
+{
+  date: number,
+  time: number,
+  name: string,
+  weight: number,
+  reps: number
+}
 
 export const LogTab = () => {
   const [newSet, SetNewSet] = React.useState({
-    time: 0,
     name: '',
     weight: 0,
     reps: 0
@@ -27,15 +36,35 @@ export const LogTab = () => {
   const [countdownVisible, SetCountdownVisible] = React.useState(false);
 
   const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
-  const setsRef = collection(database, 'users', userID, 'sets');
-  //TODO: const sets = useCollection(query(setsRef, 'ORDER BY time'));
-  const sets = useCollection(setsRef);
 
-  const AddSet = async() => { await setDoc(doc(setsRef), newSet); };
+  const date = new Date();
+  const dayNumber = (date.getUTCFullYear() * 10000) + (date.getUTCMonth() * 100 + 100) + (date.getUTCDate());
+
+  const setsRef = query(collection(database, 'users', userID, 'sets'), where('date', '==', dayNumber), orderBy('time', 'desc'));
+  const sets = useCollection(setsRef) as SetData[];
+
+  const exercises = sets ? GroupBy<SetData>(sets, 'name') : {};
+
+  const AddSet = async() => {
+    let currentDate = new Date();
+    let timeNumber = currentDate.getUTCHours() * 10000000;
+    timeNumber += currentDate.getUTCMinutes() * 100000;
+    timeNumber += currentDate.getUTCSeconds() * 1000;
+    timeNumber += currentDate.getUTCMilliseconds();
+
+    await setDoc(doc(collection(database, 'users', userID, 'sets')), {
+      date: dayNumber,
+      time: timeNumber,
+      name: newSet.name,
+      weight: newSet.weight,
+      reps: newSet.reps
+    });
+  };
+
   const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
 
   return (
-    <Box alignSelf='center' mt={6} p={4} bg='white' shadow={3}>
+    <Box alignSelf='center' mt={6} p={4}>
       <Modal
         isOpen={modalVisible}
         onClose={() => SetModalVisible(false)}
@@ -104,7 +133,7 @@ export const LogTab = () => {
 
       { countdownVisible ?
           <Box m='8'>
-            <Timer duration={9} onComplete={() => SetCountdownVisible(false)}/>
+            <Timer duration={90} onComplete={() => SetCountdownVisible(false)}/>
           </Box>
         :
           null
@@ -112,23 +141,28 @@ export const LogTab = () => {
 
       <Heading size='md'>Today</Heading>
       <VStack space={4}>
-        { sets?.map((set) =>
-            <VStack space={2} key={set.id}>
-              <HStack mt='6' justifyContent='space-between'>
-                <VStack space={1}>
-                  <Text bold>{set.name}</Text>
-                  <Text>{set.weight}lb x {set.reps}</Text>
-                  <Text>Estimated 1RM: {Calculate1RM(set.weight, set.reps).toFixed(1)}lb</Text>
-                </VStack>
+        { Object.keys(exercises).map((exercise: string) =>
+            <VStack mt={4} space={2} key={exercise}>
+              <Text bold>{exercise}</Text>
+              { exercises[exercise].map((set) =>
+                  <VStack space={2} key={set.id}>
+                    <HStack justifyContent='space-between'>
+                      <VStack space={1}>
+                        <Text>{set.weight}lb x {set.reps} reps</Text>
+                        <Text>Predicted 1RM: {Calculate1RM(set.weight, set.reps).toFixed(1)}lb</Text>
+                      </VStack>
 
-                <IconButton
-                  colorScheme='trueGray'
-                  icon={<Icon as={Ionicons} name='remove' size='md' color='trueGray.400'/>}
-                  onPress={() => RemoveSet(set.id)}
-                />
-              </HStack>
+                      <IconButton
+                        colorScheme='trueGray'
+                        icon={<Icon as={Ionicons} name='remove' size='md' color='trueGray.400'/>}
+                        onPress={() => RemoveSet(set.id)}
+                      />
+                    </HStack>
 
-              <Divider w="100%"/>
+                    <Divider w="100%"/>
+                  </VStack>
+                )
+              }
             </VStack>
           )
         }
