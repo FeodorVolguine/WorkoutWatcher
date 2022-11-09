@@ -1,7 +1,7 @@
-import { Text } from 'native-base';
+import { AnalyticsSummary } from './AnalyticsSummary';
 
 export const AnalyticsTab = () => {
   return (
-    <Text fontSize='lg'>Graph</Text>
+    <AnalyticsSummary/>
   );
 };

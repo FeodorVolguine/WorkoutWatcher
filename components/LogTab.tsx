@@ -4,16 +4,16 @@ import { Text, Divider, Heading, Box, HStack, VStack, Modal, Button, IconButton,
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { collection, query, where, orderBy, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, orderBy, doc, deleteDoc, addDoc, updateDoc } from 'firebase/firestore';
 
 import { auth, database } from '../config/Firebase';
 
-import { useCollection } from '../hooks/database';
+import { useDocument, useCollection } from '../hooks/database';
 
 import { Timer } from './Timer';
 
 import GroupBy from '../utility/GroupBy';
-import Calculate1RM from '../1RM Function';
+import OneRepMax from '../utility/OneRepMax';
 
 interface SetData
 {
@@ -36,6 +36,7 @@ export const LogTab = () => {
   const [countdownVisible, SetCountdownVisible] = React.useState(false);
 
   const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
+  const userData = useDocument(doc(database, 'users', userID));
 
   const date = new Date();
   const dayNumber = (date.getUTCFullYear() * 10000) + (date.getUTCMonth() * 100 + 100) + (date.getUTCDate());
@@ -52,13 +53,28 @@ export const LogTab = () => {
     timeNumber += currentDate.getUTCSeconds() * 1000;
     timeNumber += currentDate.getUTCMilliseconds();
 
-    await setDoc(doc(collection(database, 'users', userID, 'sets')), {
+    await addDoc(collection(database, 'users', userID, 'sets'), {
       date: dayNumber,
       time: timeNumber,
       name: newSet.name,
       weight: newSet.weight,
       reps: newSet.reps
     });
+
+    let currentOneRepMax = OneRepMax(newSet.weight, newSet.reps);
+
+    if('oneRepMax' in userData && newSet.name in userData.oneRepMax)
+    {
+      if(currentOneRepMax > userData.oneRepMax[newSet.name])
+      {
+        alert('You beat your previous 1RM!');
+        await updateDoc(doc(database, 'users', userID), { [`oneRepMax.${newSet.name}`]: currentOneRepMax });
+      }
+    }
+    else
+    {
+      await updateDoc(doc(database, 'users', userID), { [`oneRepMax.${newSet.name}`]: currentOneRepMax });
+    }
   };
 
   const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
@@ -115,7 +131,6 @@ export const LogTab = () => {
                 SetModalVisible(false);
 
                 SetNewSet({
-                  time: 0,
                   name: '',
                   weight: 0,
                   reps: 0
@@ -139,7 +154,7 @@ export const LogTab = () => {
           null
       }
 
-      <Heading size='md'>Today</Heading>
+      <Heading size='lg'>Today</Heading>
       <VStack space={4}>
         { Object.keys(exercises).map((exercise: string) =>
             <VStack mt={4} space={2} key={exercise}>
@@ -149,7 +164,7 @@ export const LogTab = () => {
                     <HStack justifyContent='space-between'>
                       <VStack space={1}>
                         <Text>{set.weight}lb x {set.reps} reps</Text>
-                        <Text>Predicted 1RM: {Calculate1RM(set.weight, set.reps).toFixed(1)}lb</Text>
+                        <Text>Predicted 1RM: {OneRepMax(set.weight, set.reps).toFixed(1)}lb</Text>
                       </VStack>
 
                       <IconButton

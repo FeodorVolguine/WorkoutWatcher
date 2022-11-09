@@ -1,15 +1,13 @@
 import React from 'react';
 
-import { doc, Query, DocumentData, getDocs, onSnapshot } from 'firebase/firestore';
+import { Query, DocumentData, DocumentReference, onSnapshot } from 'firebase/firestore';
 
-import { database } from '../config/Firebase';
-
-export function useDocument(path: string)
+export function useDocument(document: DocumentReference<DocumentData>)
 {
   const [data, SetData] = React.useState<any>();
 
   React.useEffect(() => {
-    return onSnapshot(doc(database, path), (doc) => SetData(doc.data()));
+    return onSnapshot(document, (doc) => SetData(doc.data()));
   }, []);
 
   return data;

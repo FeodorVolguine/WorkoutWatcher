@@ -18,9 +18,9 @@ export function HomeScreen() {
 
   return (
     <Tab.Navigator
-      initialRouteName='Log'
+      initialRouteName='Analytics'
       screenOptions={({ route }) => ({
-        //headerShown: false,
+        headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           switch(route.name)
           {

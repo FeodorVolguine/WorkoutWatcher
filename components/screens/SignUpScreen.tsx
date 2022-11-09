@@ -4,9 +4,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { Text, Box, VStack, Button, Icon, Input, FormControl} from 'native-base';
 
+import { doc, setDoc } from 'firebase/firestore';
+
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-import { auth } from '../../config/Firebase';
+import { auth, database } from '../../config/Firebase';
 
 export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
   const [value, SetValue] = React.useState({
@@ -35,9 +37,26 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
     {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
 
+      await setDoc(doc(database, 'users', auth.currentUser?.uid ? auth.currentUser?.uid : ''), {
+        oneRepMax: {}
+      });
+
       navigation.navigate('Sign In');
     }
-    catch(error) { SetValue({ ...value, error: error.message }); }
+    catch(error)
+    {
+      //TODO: switch statement on errorCode
+      /*
+      switch(error.message)
+      {
+        case('auth/weak-password')
+        {
+
+        }
+      }
+      */
+      SetValue({ ...value, error: error.message });
+    }
   }
 
   return (
