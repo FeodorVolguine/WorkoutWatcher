@@ -38,6 +38,7 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
 
       await setDoc(doc(database, 'users', auth.currentUser?.uid ? auth.currentUser?.uid : ''), {
+        following: [],
         oneRepMax: {}
       });
 

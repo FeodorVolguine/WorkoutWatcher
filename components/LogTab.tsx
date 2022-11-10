@@ -4,7 +4,7 @@ import { Text, Divider, Heading, Box, HStack, VStack, Modal, Button, IconButton,
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { collection, query, where, orderBy, doc, deleteDoc, addDoc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, orderBy, doc, deleteDoc, addDoc, updateDoc, getDocs } from 'firebase/firestore';
 
 import { auth, database } from '../config/Firebase';
 
@@ -46,7 +46,7 @@ export const LogTab = () => {
 
   const exercises = sets ? GroupBy<SetData>(sets, 'name') : {};
 
-  const AddSet = async() => {
+  const AddSet = async () => {
     let currentDate = new Date();
     let timeNumber = currentDate.getUTCHours() * 10000000;
     timeNumber += currentDate.getUTCMinutes() * 100000;
@@ -63,6 +63,7 @@ export const LogTab = () => {
 
     let currentOneRepMax = OneRepMax(newSet.weight, newSet.reps);
 
+    //Update user document if the new set is a 1 rep max
     if('oneRepMax' in userData && newSet.name in userData.oneRepMax)
     {
       if(currentOneRepMax > userData.oneRepMax[newSet.name])
@@ -77,7 +78,7 @@ export const LogTab = () => {
     }
   };
 
-  const RemoveSet = async(setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
+  const RemoveSet = async (setDocID: string) => { await deleteDoc(doc(database, "users", userID, "sets", setDocID)); };
 
   return (
     <Box alignSelf='center' mt={6} p={4}>

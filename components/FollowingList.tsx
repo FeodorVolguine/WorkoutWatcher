@@ -2,28 +2,27 @@ import React from 'react';
 
 import { Text, Heading, Box, HStack, VStack, Modal, Button, Input, FormControl } from 'native-base';
 
-import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 
-import { auth, database } from '../config/Firebase';
+import { database } from '../config/Firebase';
 
-import { useCollection } from '../hooks/database';
+interface FollowingListProps
+{
+  userID: string,
+  userData: any
+}
 
-export const FollowingList = () => {
+export const FollowingList = (props: FollowingListProps) => {
   const [newFollowingUserID, SetNewFollowingUserID] = React.useState('');
 
   const [modalVisible, SetModalVisible] = React.useState(false);
 
-  const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
-
-  const followingRef = collection(database, 'users', userID, 'following');
-  const following = useCollection(followingRef);
-
   const Follow = async() => {
     //TODO: Check if the user exists
-    await setDoc(doc(collection(database, 'users', newFollowingUserID, 'followRequests')), { userID:  userID });
+    await setDoc(doc(collection(database, 'users', newFollowingUserID, 'followRequests')), { userID: props.userID });
   };
 
-  const Unfollow = async(friendDocID: string) => { await deleteDoc(doc(database, 'users', userID, 'following', friendDocID)); };
+  const Unfollow = async(followDocID: string) => { await updateDoc(doc(database, 'users', props.userID), { following: arrayRemove(followDocID) }); };
 
   return (
     <Box mt={6} p={4}>
@@ -37,7 +36,7 @@ export const FollowingList = () => {
 
           <Modal.Body>
             <VStack space={6}>
-              <Text fontWeight='semibold'>Your user ID: {userID}</Text>
+              <Text fontWeight='semibold'>Your user ID: {props.userID}</Text>
 
               <FormControl>
                 <FormControl.Label>Friend user ID</FormControl.Label>
@@ -69,17 +68,19 @@ export const FollowingList = () => {
 
       <Heading size='md'>Following</Heading>
       <VStack space={4}>
-      {
-        following?.map((item) =>
-          <HStack borderBottomWidth='1' justifyContent='space-between' alignItems='center' key={item.id}>
-            <Text>{item.userID}</Text>
-
-            <Button
-              variant='ghost'
-              onPress={() => Unfollow(item.id)}
-            >Unfollow</Button>
-          </HStack>
-        )
+      { props.userData ?
+          props.userData.following?.map((item: string) =>
+            <HStack borderBottomWidth='1' justifyContent='space-between' alignItems='center' key={item}>
+              <Text>{item}</Text>
+        
+              <Button
+                variant='ghost'
+                onPress={() => Unfollow(item)}
+              >Unfollow</Button>
+            </HStack>
+          )
+        :
+          null
       }
       </VStack>
       

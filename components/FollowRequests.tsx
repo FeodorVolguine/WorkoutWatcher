@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Text, Heading, Box, HStack, FlatList, IconButton, Icon, Button, VStack } from 'native-base';
+import { Text, Heading, Box, HStack, IconButton, Icon, Button, VStack } from 'native-base';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 import { auth, database } from '../config/Firebase';
 
@@ -16,8 +16,9 @@ export const FollowRequests = () => {
   const followRequestsRef = collection(database, 'users', userID, 'followRequests');
   const followRequests = useCollection(followRequestsRef);
 
-  const Accept = async(requesterDocID: string, requesterUserID: string) => {
-    await setDoc(doc(collection(database, 'users', requesterUserID, 'following')), { userID: userID });
+  const Accept = async(requesterUserID: string) => {
+    //await setDoc(doc(collection(database, 'users', requesterUserID, 'following')), { userID: userID });
+    await updateDoc(doc(database, 'users', requesterUserID), { following: arrayUnion(userID) });
   };
 
   const Decline = async(requesterDocID: string) => { await deleteDoc(doc(database, 'users', userID, 'followRequests', requesterDocID)); };
@@ -35,7 +36,7 @@ export const FollowRequests = () => {
               <IconButton
                 colorScheme='green'
                 icon={<Icon as={Ionicons} name='checkmark' color='green.500'/>}
-                onPress={() => Accept(request.id, request.userID)}
+                onPress={() => Accept(request.userID)}
               />
 
               <IconButton
