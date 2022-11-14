@@ -23,15 +23,29 @@ export default {
       "supportsTablet": true
     },
     "android": {
+      "package": "com.workoutwatcher",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#ffffff"
+        }
+      ]
+    ],
     "extra": {
+      "eas": {
+        "projectId": "10164f78-12e3-4b7a-888e-6031d8bbfe6f"
+      },
       firebaseApiKey: process.env.FIREBASE_API_KEY,
       firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
       firebaseProjectID: process.env.FIREBASE_PROJECT_ID,

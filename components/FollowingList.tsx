@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text, Heading, Box, HStack, VStack, Modal, Button, Input, FormControl } from 'native-base';
 
-import { collection, doc, setDoc, updateDoc, arrayRemove } from 'firebase/firestore';
+import { collection, doc, setDoc, updateDoc, arrayRemove, addDoc } from 'firebase/firestore';
 
 import { database } from '../config/Firebase';
 
@@ -18,8 +18,8 @@ export const FollowingList = (props: FollowingListProps) => {
   const [modalVisible, SetModalVisible] = React.useState(false);
 
   const Follow = async() => {
-    //TODO: Check if the user exists
-    await setDoc(doc(collection(database, 'users', newFollowingUserID, 'followRequests')), { userID: props.userID });
+    //TODO: Check if the user exists first
+    await addDoc(collection(database, 'users', newFollowingUserID, 'followRequests'), { userID: props.userID });
   };
 
   const Unfollow = async(followDocID: string) => { await updateDoc(doc(database, 'users', props.userID), { following: arrayRemove(followDocID) }); };

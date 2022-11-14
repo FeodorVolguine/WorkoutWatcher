@@ -23,7 +23,7 @@ export const SettingsTab = () => {
   const { toggleColorMode } = useColorMode();
 
   return (
-    <VStack maxW='2xl' alignSelf='center' alignItems='left' space={4}>
+    <VStack maxW='2xl' alignSelf='center' alignItems='flex-start' space={4}>
       <Box>
         <Heading>Profile</Heading>
         <Text>Logged in as {user?.email}</Text>

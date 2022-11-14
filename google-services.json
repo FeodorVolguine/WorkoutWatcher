@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "970056961109",
+    "project_id": "workoutwatcher-94d08",
+    "storage_bucket": "workoutwatcher-94d08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970056961109:android:ec9c66d8bd2904668b98dc",
+        "android_client_info": {
+          "package_name": "com.workoutwatcher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970056961109-3lu2grt31sktrp3ajovgp2g8nvh6tkdi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbhkZXgMWBGb6UngvWsYBZZZCO24WMFUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970056961109-3lu2grt31sktrp3ajovgp2g8nvh6tkdi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

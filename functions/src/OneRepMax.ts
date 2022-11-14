@@ -8,7 +8,7 @@ admin.initializeApp();
 const database = admin.firestore();
 
 export const OneRepMax = functions.firestore.document('users/{userID}').onWrite(async (change, context) => {
-  console.log('THE OneRepMax FUNCTION HAS RUN!');
+  console.log('OneRepMax cloud function has run!');
   //const new1RMs = change.after.data()?.oneRepMax;
   //const old1RMs = change.before.data()?.oneRepMax;
 

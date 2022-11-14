@@ -1,10 +1,14 @@
-import React, { ReactNode } from 'react';
+import 'expo-dev-client';
+
+import React, { ReactNode, useEffect } from 'react';
 
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 
 import { NativeBaseProvider, extendTheme, useTheme, useColorMode } from 'native-base';
 
 import Index from './components/Index';
+
+import { RegisterForPushNotifications } from './utility/RegisterForPushNotifications';
 
 const ReactNavigationContainer = (props: { children: ReactNode }) => {
   const { colors } = useTheme();
@@ -40,8 +44,11 @@ const nativeBaseTheme = extendTheme({
   }
 });
 
-export default function App() {
-  
+export default function App()
+{
+  useEffect(() => {
+    RegisterForPushNotifications();
+  }, []);
 
   return (
     <NativeBaseProvider theme={nativeBaseTheme}>
