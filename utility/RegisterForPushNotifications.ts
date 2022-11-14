@@ -26,7 +26,6 @@ export const RegisterForPushNotifications = async () => {
     }
 
     let token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@feodorv/WorkoutWatcher' })).data;
-    console.log(token);
     await updateDoc(doc(database, 'users', auth.currentUser?.uid ? auth.currentUser?.uid : ''), { expoPushToken: token });
   }
   else
