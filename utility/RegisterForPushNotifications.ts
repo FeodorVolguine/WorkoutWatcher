@@ -3,7 +3,9 @@ import * as Notifications from 'expo-notifications';
 
 import { Platform } from 'react-native';
 
-import { doc, updateDoc } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 import { auth, database } from '../config/Firebase';
 
@@ -26,7 +28,23 @@ export const RegisterForPushNotifications = async () => {
     }
 
     let token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@feodorv/WorkoutWatcher' })).data;
-    await updateDoc(doc(database, 'users', auth.currentUser?.uid ? auth.currentUser?.uid : ''), { expoPushToken: token });
+
+    // Store token in AsyncStorage
+    try
+    {
+      await AsyncStorage.setItem('expoPushToken', token);
+    }
+    catch (error)
+    {
+      alert('Failed to store Expo push token in AsyncStorage');
+      console.log(error);
+      alert('error: ' + error);
+      return;
+    }
+
+    // Add token to database
+    const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
+    await updateDoc(doc(database, 'users', userID), { expoPushTokens: arrayUnion(token) });
   }
   else
     alert('Must use physical device for push notifications');

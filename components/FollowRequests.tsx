@@ -17,7 +17,6 @@ export const FollowRequests = () => {
   const followRequests = useCollection(followRequestsRef);
 
   const Accept = async(requesterUserID: string) => {
-    //await setDoc(doc(collection(database, 'users', requesterUserID, 'following')), { userID: userID });
     await updateDoc(doc(database, 'users', requesterUserID), { following: arrayUnion(userID) });
   };
 

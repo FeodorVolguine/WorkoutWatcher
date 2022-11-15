@@ -6,6 +6,8 @@ import { Icon } from 'native-base';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { usePushNotifications } from '../../hooks/usePushNotifications';
+
 import { LogTab } from '../LogTab';
 import { AnalyticsTab } from '../AnalyticsTab';
 import { SocialTab } from '../SocialTab';
@@ -14,11 +16,13 @@ import { SettingsTab } from '../SettingsTab';
 const Tab = createBottomTabNavigator();
 
 export function HomeScreen() {
+  usePushNotifications();
+
   let socialTabIconBadgeCount = 0;
 
   return (
     <Tab.Navigator
-      initialRouteName='Analytics'
+      initialRouteName='Log'
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {

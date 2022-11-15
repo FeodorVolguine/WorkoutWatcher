@@ -35,6 +35,8 @@ const SendPushNotifications = async (messages: ExpoPushMessage[]): Promise<void>
       }
     }
   })();
+
+  //TODO: Handle tickets...
 }
 
 export const OneRepMax = functions.firestore.document('users/{userID}').onWrite(async (change, context) => {

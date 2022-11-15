@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { Text, Box, VStack, Button, Icon, Input, FormControl, Alert } from 'native-base';
 
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 import { auth } from '../../config/Firebase';
 

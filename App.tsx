@@ -1,17 +1,12 @@
 import 'expo-dev-client';
 
-import * as Notifications from 'expo-notifications';
-
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 
 import { NativeBaseProvider, extendTheme, useTheme, useColorMode } from 'native-base';
 
 import Index from './components/Index';
-
-import { RegisterForPushNotifications } from './utility/RegisterForPushNotifications';
-import { RegisterDevicePushToken } from './utility/RegisterDevicePushToken';
 
 const ReactNavigationContainer = (props: { children: ReactNode }) => {
   const { colors } = useTheme();
@@ -49,13 +44,6 @@ const nativeBaseTheme = extendTheme({
 
 export default function App()
 {
-  useEffect(() => { RegisterForPushNotifications(); }, []);
-
-  React.useEffect(() => {
-    const subscription = Notifications.addPushTokenListener(RegisterDevicePushToken);
-    return () => subscription.remove();
-  }, []);
-
   return (
     <NativeBaseProvider theme={nativeBaseTheme}>
       <ReactNavigationContainer>

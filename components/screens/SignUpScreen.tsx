@@ -37,12 +37,12 @@ export const SignUpScreen = ({ navigation }: NativeStackScreenProps<any>) => {
     {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
 
-      await setDoc(doc(database, 'users', auth.currentUser?.uid ? auth.currentUser?.uid : ''), {
+      const userID = auth.currentUser?.uid ? auth.currentUser?.uid : '';
+      await setDoc(doc(database, 'users', userID), {
+        expoPushTokens: [],
         following: [],
         oneRepMax: {}
       });
-
-      navigation.navigate('Sign In');
     }
     catch(error)
     {
